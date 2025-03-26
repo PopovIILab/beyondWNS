@@ -4,7 +4,8 @@
 
 **Pipeline:**
 
-<img src="https://github.com/PopovIILab/beyondWNS/blob/main/imgs/beyondWNS.png" width="100%"/>
+![Pdiddy](https://github.com/user-attachments/assets/f85f538c-fedf-423b-83cc-e2e52340a786)
+
 
 _Figure 1. Pipeline overview._
 
