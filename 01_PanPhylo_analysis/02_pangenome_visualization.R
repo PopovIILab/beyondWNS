@@ -141,8 +141,8 @@ pangenome_scatter <- ggplot(pangenome_df, aes(x = num_fam, y = nb_members)) +
     ),
     size = 4,
     fontface = "bold",
-    nudge_x = c(0, 0, 0, 25, 0, 0, 0, 0),
-    nudge_y = c(1, -1, 5, 2, -1 , 1, 1, -1)
+    nudge_x = c(0, 0, 0, 0),
+    nudge_y = c(1, -1, 1, 1)
   ) +
   
   # Add a horizontal dashed line at y = 70
