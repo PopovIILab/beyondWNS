@@ -4,7 +4,7 @@
 
 **Pipeline:**
 
-![beyondWNS](https://github.com/user-attachments/assets/609a5b41-218b-4e5a-9295-f9bf08cab127)
+![beyondWNS](https://github.com/user-attachments/assets/0b54fd06-019d-4925-83f4-b96017357e65)
 
 _Figure 1. Pipeline overview._
 
