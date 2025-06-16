@@ -4,8 +4,7 @@
 
 **Pipeline:**
 
-![Pdiddy](https://github.com/user-attachments/assets/f85f538c-fedf-423b-83cc-e2e52340a786)
-
+![beyondWNS](https://github.com/user-attachments/assets/14f8b6d6-c16c-4688-8f2e-c884803dc955)
 
 _Figure 1. Pipeline overview._
 
