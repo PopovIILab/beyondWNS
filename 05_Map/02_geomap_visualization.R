@@ -83,7 +83,19 @@ tm_shape(tempp) +
     midpoint = 0,
     style = 'pretty',
     legend.reverse = TRUE,
-    palette = '-RdBu'
+    palette = '-RdBu',
+    labels = c(
+      "−60 – −50",
+      "−50 – −40",
+      "−40 – −30",
+      "−30 – −20",
+      "−20 – −10",
+      "−10 – 0",
+      "0 – 10",
+      "10 – 20",
+      "20 – 30",
+      "30 – 40"
+    )
   ) +
   tm_shape(lyrp$ocean) +
   tm_fill(fill = 'azure') +

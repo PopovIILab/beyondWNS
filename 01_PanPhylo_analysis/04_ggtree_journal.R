@@ -133,7 +133,7 @@ midpoint.root(cox2_tree)
 cox2_tree_fig <- ggtree(cox2_tree) %<+% metadata +
   xlim(0, 0.1) +
   geom_hilight(
-    mapping = aes(subset = node %in% c(33), fill = S),
+    mapping = aes(subset = node %in% c(31), fill = S),
     fill = "steelblue",
     alpha = .6,
     extend = 1
@@ -371,9 +371,9 @@ ggsave(
 
 everything <- ALL_tree_fig + (nad4l_tree_fig + cox2_tree_fig) / (cob_tree_fig + cox1_tree_fig) + plot_annotation(tag_levels = list(c("A", "B", "C", "D", "E")))
 
-everything <- ALL_tree_fig + 
-  (nad4l_tree_fig + cox2_tree_fig) / 
-  (cob_tree_fig + cox1_tree_fig) + 
+everything <- ALL_tree_fig +
+  (nad4l_tree_fig + cox2_tree_fig) /
+  (cob_tree_fig + cox1_tree_fig) +
   plot_annotation(tag_levels = list(c("A", "B", "C", "D", "E"))) +
   plot_layout(heights = c(12, 1), widths = c(0.6, 1.6))  # Make second row wider
 
@@ -381,6 +381,19 @@ ggsave(
   "imgs/everything_tree.png",
   plot = everything,
   width = 38,
+  height = 16,
+  dpi = 600
+)
+
+everything_v2 <-  (nad4l_tree_fig + cox2_tree_fig) /
+  (cob_tree_fig + cox1_tree_fig) +
+  plot_annotation(tag_levels = list(c("A", "B", "C", "D"))) #+
+  #plot_layout(heights = c(12, 1), widths = c(0.6, 1.6))  # Make second row wider
+
+ggsave(
+  "imgs/everything_v2_tree.png",
+  plot = everything_v2,
+  width = 28,
   height = 16,
   dpi = 600
 )

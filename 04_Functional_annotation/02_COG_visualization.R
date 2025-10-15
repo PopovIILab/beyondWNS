@@ -245,7 +245,7 @@ combined <- combined %>%
 barchart <- ggplot(combined, aes(x = Group, y = rel_abund, fill = category)) +
   geom_bar(
     stat = "identity",
-    width = 0.9,
+    width = 0.75,
     color = "black",
     size = 0.3,
     position = "stack"
@@ -272,7 +272,7 @@ barchart <- ggplot(combined, aes(x = Group, y = rel_abund, fill = category)) +
 
 # Combine the plots with specific heights
 combined_plot <- complete_plot + characterized_plot + barchart +
-  plot_layout(heights = c(6, 4, 2)) +
+  plot_layout(heights = c(6, 4, 4)) +
   plot_annotation(tag_levels = 'A')
 
 # Save the combined plot
@@ -280,6 +280,6 @@ ggsave(
   "imgs/combined_functional_profiles.png",
   combined_plot,
   width = 10,
-  height = 12,
+  height = 14,
   dpi = 600
 )
