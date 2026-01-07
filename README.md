@@ -1,4 +1,4 @@
-# Beyond White-Nose Syndrome: A Multi-Scale Genomic Analysis of *Pseudogymnoascus destructans*
+# Beyond White-Nose Syndrome: A Multi-Scale Genomic Analysis of *Pseudogymnoascus destructans*ы
 
 **Pipeline:**
 
