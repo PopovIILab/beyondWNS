@@ -1,0 +1,12 @@
+name: geomap
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+dependencies:
+  - wget=1.21.4
+  - python=3.13.2
+  - pip=25.0.1
+  - ipykernel=6.29.5
+  - pip:
+      - pandas==2.2.3
