@@ -1,4 +1,5 @@
 # Beyond White-Nose Syndrome: A Multi-Scale Genomic Analysis of *Pseudogymnoascus destructans*
+[![CI](https://github.com/PopovIILab/beyondWNS/actions/workflows/test-envs.yml/badge.svg)](https://github.com/PopovIILab/beyondWNS/actions/workflows/test-envs.yml)
 
 **Pipeline:**
 
