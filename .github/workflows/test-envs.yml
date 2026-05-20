@@ -1,0 +1,28 @@
+name: Test conda envs
+on: [push]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash -el {0}
+    strategy:
+      matrix:
+        include:
+          - env: panphylo.yaml
+            path: 01_PanPhylo_analysis
+          - env: compar_genomics.yaml
+            path: 02_Comparative_genomics
+          - env: dating.yaml
+            path: 03_Dating
+          - env: annotation.yaml
+            path: 04_Functional_annotation
+          - env: geomap.yaml
+            path: 05_Map
+    steps:
+      - uses: actions/checkout@v4
+      - uses: conda-incubator/setup-miniconda@v4
+        with:
+          miniforge-version: latest
+          activate-environment: test
+      - run: conda env create -f ${{ matrix.path }}/${{ matrix.env }} --dry-run
