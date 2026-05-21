@@ -9,13 +9,16 @@ setwd(main_dir)
 
 # Load/install required packages
 
-if (!require("pacman"))
+if (!require("pacman")) {
   install.packages("pacman")
+}
 
 pacman::p_load(ggplot2, dplyr, tidyr, ggnewscale, ggrepel, patchwork)
 
 # Read the gene_countsset
-pangenome_df <- read.csv("pangenome/Pangenome/PanGenome-LeMy.All.prt-clust-0.9-mode1.lst.summary.txt")
+pangenome_df <- read.csv(
+  "pangenome/Pangenome/PanGenome-LeMy.All.prt-clust-0.9-mode1.lst.summary.txt"
+)
 
 #######################
 # Part 1: Donut chart #
@@ -26,10 +29,14 @@ pangenome_df_1 <- pangenome_df %>%
   mutate(
     Core = ifelse(nb_members == 24, "Core", NA),
     # Core genes (present in all genomes)
-    Shared = ifelse(nb_members > 1 &
-                      nb_members < 24, "Shell", NA),
+    Shared = ifelse(
+      nb_members > 1 &
+        nb_members < 24,
+      "Shell",
+      NA
+    ),
     # Shared genes (present in some genomes)
-    Unique = ifelse(nb_members == 1, "Cloud", NA)  # Unique genes (present in only one genome)
+    Unique = ifelse(nb_members == 1, "Cloud", NA) # Unique genes (present in only one genome)
   )
 
 # Count the number of genes in each category
@@ -51,12 +58,14 @@ gene_counts$ymin = c(0, head(gene_counts$ymax, n = -1))
 gene_counts$labelPosition <- (gene_counts$ymax + gene_counts$ymin) / 2
 
 # Compute a good label
-gene_counts$label <- paste0(gene_counts$Type,
-                            "\n value: ",
-                            gene_counts$n,
-                            "\n",
-                            round((gene_counts$fraction * 100), 2),
-                            "%")
+gene_counts$label <- paste0(
+  gene_counts$Type,
+  "\n value: ",
+  gene_counts$n,
+  "\n",
+  round((gene_counts$fraction * 100), 2),
+  "%"
+)
 
 colors <- c(
   "Core" = "#d9e7f1",
@@ -65,18 +74,22 @@ colors <- c(
 )
 
 # Make the plot
-pangenome_donut <- ggplot(gene_counts,
-                          aes(
-                            ymax = ymax,
-                            ymin = ymin,
-                            xmax = 4,
-                            xmin = 3,
-                            fill = Type
-                          )) +
+pangenome_donut <- ggplot(
+  gene_counts,
+  aes(
+    ymax = ymax,
+    ymin = ymin,
+    xmax = 4,
+    xmin = 3,
+    fill = Type
+  )
+) +
   geom_rect() +
-  geom_text(x = 1.5,
-            aes(y = labelPosition, label = label, color = Type),
-            size = 6) + # x here controls label position (inner / outer)
+  geom_text(
+    x = 1.5,
+    aes(y = labelPosition, label = label, color = Type),
+    size = 6
+  ) + # x here controls label position (inner / outer)
   scale_fill_manual(values = colors) +
   scale_color_manual(values = colors) +
   coord_polar(theta = "y") +
@@ -98,7 +111,7 @@ ggsave(
 
 # Create the base plot
 pangenome_scatter <- ggplot(pangenome_df, aes(x = num_fam, y = nb_members)) +
-  
+
   # Highlight cloud genome
   geom_point(
     data = pangenome_df[pangenome_df$nb_members == 1, ],
@@ -109,10 +122,12 @@ pangenome_scatter <- ggplot(pangenome_df, aes(x = num_fam, y = nb_members)) +
     shape = 19,
     stroke = 2
   ) +
-  
+
   # Highlight shell genome
   geom_point(
-    data = pangenome_df[pangenome_df$nb_members > 1 & pangenome_df$nb_members < 16, ],
+    data = pangenome_df[
+      pangenome_df$nb_members > 1 & pangenome_df$nb_members < 16,
+    ],
     aes(x = num_fam, y = nb_members),
     color = "#743f96",
     alpha = 0.75,
@@ -120,7 +135,7 @@ pangenome_scatter <- ggplot(pangenome_df, aes(x = num_fam, y = nb_members)) +
     shape = 19,
     stroke = 2
   ) +
-  
+
   # Highlight gene family 314
   geom_point(
     data = pangenome_df[pangenome_df$nb_members >= 16, ],
@@ -131,7 +146,7 @@ pangenome_scatter <- ggplot(pangenome_df, aes(x = num_fam, y = nb_members)) +
     shape = 21,
     stroke = 2
   ) +
-  
+
   geom_text_repel(
     data = pangenome_df[pangenome_df$nb_members >= 16, ],
     aes(
@@ -144,7 +159,7 @@ pangenome_scatter <- ggplot(pangenome_df, aes(x = num_fam, y = nb_members)) +
     nudge_x = c(0, 0, 0, 0),
     nudge_y = c(1, -1, 1, 1)
   ) +
-  
+
   # Add a horizontal dashed line at y = 70
   geom_hline(
     yintercept = 15,
@@ -152,16 +167,16 @@ pangenome_scatter <- ggplot(pangenome_df, aes(x = num_fam, y = nb_members)) +
     linetype = "dashed",
     alpha = 0.5
   ) +
-  
+
   # Customize axis labels and breaks
-  scale_x_continuous(breaks = seq(0, 614, by = 75)) +  # Display every x-axis label
-  scale_y_continuous(breaks = seq(0, 24, by = 5)) +  # Display y-axis labels every 10 units
-  
+  scale_x_continuous(breaks = seq(0, 614, by = 75)) + # Display every x-axis label
+  scale_y_continuous(breaks = seq(0, 24, by = 5)) + # Display y-axis labels every 10 units
+
   # Remove title and legend
   theme_minimal() +
   theme(legend.position = "none") +
   labs(x = "Gene Family ID", y = "Number of Genomes Sharing the Gene") +
-  
+
   # Ensure everything fits into the plot area
   theme(plot.margin = unit(c(1, 1, 1, 1), "cm"))
 
@@ -177,7 +192,8 @@ ggsave(
 ###### COMBINED ######
 ######################
 
-everything <- (pangenome_donut + pangenome_scatter) + plot_annotation(tag_levels = list(c("A", "B")))
+everything <- (pangenome_donut + pangenome_scatter) +
+  plot_annotation(tag_levels = list(c("A", "B")))
 ggsave(
   "imgs/combined_pangenome.png",
   plot = everything,

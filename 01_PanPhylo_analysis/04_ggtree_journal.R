@@ -7,8 +7,9 @@ setwd(main_dir)
 
 #install.packages('BiocManager')
 
-if (!require("pacman"))
+if (!require("pacman")) {
   install.packages("pacman")
+}
 
 pacman::p_load(
   ggtree,
@@ -52,7 +53,9 @@ colnames(meta.loc) <- 'Country'
 rownames(meta.loc) <- metadata$Name
 meta.loc$Country[meta.loc$Country == "ND"] <- NA
 meta.loc$Country[meta.loc$Country == "USA: New York, Williams Hotel"] <- "USA"
-meta.loc$Country[meta.loc$Country == "Switzerland: Boedmerenwald"] <- "Switzerland"
+meta.loc$Country[
+  meta.loc$Country == "Switzerland: Boedmerenwald"
+] <- "Switzerland"
 colnames(meta.loc) <- c("Location")
 
 
@@ -70,7 +73,8 @@ midpoint.root(nad4l_tree)
 
 # Draft tree
 
-nad4l_tree_fig <- ggtree(nad4l_tree) %<+% metadata +
+nad4l_tree_fig <- ggtree(nad4l_tree) %<+%
+  metadata +
   xlim(0, 0.1) +
   geom_hilight(
     mapping = aes(subset = node %in% c(37), fill = S),
@@ -102,11 +106,14 @@ nad4l_tree_boot$bootstrap[is.na(nad4l_tree_boot$label)] <- '1'
 
 # Add bootstrap values to the tree (black branches = bootstrap >70; grey branches = bootstrap <70)
 
-nad4l_tree_fig <- nad4l_tree_fig + new_scale_color() +
+nad4l_tree_fig <- nad4l_tree_fig +
+  new_scale_color() +
   geom_tree(data = nad4l_tree_boot, aes(color = bootstrap == '1')) +
-  scale_color_manual(name = 'Bootstrap',
-                     values = setNames(c("black", "grey"), c(T, F)),
-                     guide = "none")
+  scale_color_manual(
+    name = 'Bootstrap',
+    values = setNames(c("black", "grey"), c(T, F)),
+    guide = "none"
+  )
 
 ggsave(
   'imgs/nad4l.png',
@@ -130,7 +137,8 @@ midpoint.root(cox2_tree)
 
 # Draft tree
 
-cox2_tree_fig <- ggtree(cox2_tree) %<+% metadata +
+cox2_tree_fig <- ggtree(cox2_tree) %<+%
+  metadata +
   xlim(0, 0.1) +
   geom_hilight(
     mapping = aes(subset = node %in% c(31), fill = S),
@@ -162,11 +170,14 @@ cox2_tree_boot$bootstrap[is.na(cox2_tree_boot$label)] <- '1'
 
 # Add bootstrap values to the tree (black branches = bootstrap >70; grey branches = bootstrap <70)
 
-cox2_tree_fig <- cox2_tree_fig + new_scale_color() +
+cox2_tree_fig <- cox2_tree_fig +
+  new_scale_color() +
   geom_tree(data = cox2_tree_boot, aes(color = bootstrap == '1')) +
-  scale_color_manual(name = 'Bootstrap',
-                     values = setNames(c("black", "grey"), c(T, F)),
-                     guide = "none")
+  scale_color_manual(
+    name = 'Bootstrap',
+    values = setNames(c("black", "grey"), c(T, F)),
+    guide = "none"
+  )
 
 ggsave(
   'imgs/cox2.png',
@@ -190,7 +201,8 @@ midpoint.root(cob_tree)
 
 # Draft tree
 
-cob_tree_fig <- ggtree(cob_tree) %<+% metadata +
+cob_tree_fig <- ggtree(cob_tree) %<+%
+  metadata +
   xlim(0, 0.1) +
   geom_hilight(
     mapping = aes(subset = node %in% c(29), fill = S),
@@ -222,11 +234,14 @@ cob_tree_boot$bootstrap[is.na(cob_tree_boot$label)] <- '1'
 
 # Add bootstrap values to the tree (black branches = bootstrap >70; grey branches = bootstrap <70)
 
-cob_tree_fig <- cob_tree_fig + new_scale_color() +
+cob_tree_fig <- cob_tree_fig +
+  new_scale_color() +
   geom_tree(data = cob_tree_boot, aes(color = bootstrap == '1')) +
-  scale_color_manual(name = 'Bootstrap',
-                     values = setNames(c("black", "grey"), c(T, F)),
-                     guide = "none")
+  scale_color_manual(
+    name = 'Bootstrap',
+    values = setNames(c("black", "grey"), c(T, F)),
+    guide = "none"
+  )
 
 ggsave(
   'imgs/cob.png',
@@ -250,7 +265,8 @@ midpoint.root(cox1_tree)
 
 # Draft tree
 
-cox1_tree_fig <- ggtree(cox1_tree) %<+% metadata +
+cox1_tree_fig <- ggtree(cox1_tree) %<+%
+  metadata +
   xlim(0, 0.2) +
   geom_hilight(
     mapping = aes(subset = node %in% c(28), fill = S),
@@ -282,11 +298,14 @@ cox1_tree_boot$bootstrap[is.na(cox1_tree_boot$label)] <- '1'
 
 # Add bootstrap values to the tree (black branches = bootstrap >70; grey branches = bootstrap <70)
 
-cox1_tree_fig <- cox1_tree_fig + new_scale_color() +
+cox1_tree_fig <- cox1_tree_fig +
+  new_scale_color() +
   geom_tree(data = cox1_tree_boot, aes(color = bootstrap == '1')) +
-  scale_color_manual(name = 'Bootstrap',
-                     values = setNames(c("black", "grey"), c(T, F)),
-                     guide = "none")
+  scale_color_manual(
+    name = 'Bootstrap',
+    values = setNames(c("black", "grey"), c(T, F)),
+    guide = "none"
+  )
 
 ggsave(
   'imgs/cox1.png',
@@ -310,7 +329,8 @@ midpoint.root(ALL_tree)
 
 # Draft tree
 
-ALL_tree_fig <- ggtree(ALL_tree) %<+% metadata +
+ALL_tree_fig <- ggtree(ALL_tree) %<+%
+  metadata +
   xlim(0, 0.3) +
   geom_hilight(
     mapping = aes(subset = node %in% c(29), fill = S),
@@ -342,11 +362,14 @@ ALL_tree_boot$bootstrap[is.na(ALL_tree_boot$label)] <- '1'
 
 # Add bootstrap values to the tree (black branches = bootstrap >70; grey branches = bootstrap <70)
 
-ALL_tree_fig <- ALL_tree_fig + new_scale_color() +
+ALL_tree_fig <- ALL_tree_fig +
+  new_scale_color() +
   geom_tree(data = ALL_tree_boot, aes(color = bootstrap == '1')) +
-  scale_color_manual(name = 'Bootstrap',
-                     values = setNames(c("black", "grey"), c(T, F)),
-                     guide = "none")
+  scale_color_manual(
+    name = 'Bootstrap',
+    values = setNames(c("black", "grey"), c(T, F)),
+    guide = "none"
+  )
 
 ggsave(
   'imgs/ALL.png',
@@ -360,7 +383,9 @@ ggsave(
 ###### COMBINED ######
 ######################
 
-conserved <- (nad4l_tree_fig + cox2_tree_fig) / (cob_tree_fig + cox1_tree_fig) + plot_annotation(tag_levels = list(c("A", "B", "C", "D")))
+conserved <- (nad4l_tree_fig + cox2_tree_fig) /
+  (cob_tree_fig + cox1_tree_fig) +
+  plot_annotation(tag_levels = list(c("A", "B", "C", "D")))
 ggsave(
   "imgs/conserved_tree.png",
   plot = conserved,
@@ -369,13 +394,15 @@ ggsave(
   dpi = 600
 )
 
-everything <- ALL_tree_fig + (nad4l_tree_fig + cox2_tree_fig) / (cob_tree_fig + cox1_tree_fig) + plot_annotation(tag_levels = list(c("A", "B", "C", "D", "E")))
+everything <- ALL_tree_fig +
+  (nad4l_tree_fig + cox2_tree_fig) / (cob_tree_fig + cox1_tree_fig) +
+  plot_annotation(tag_levels = list(c("A", "B", "C", "D", "E")))
 
 everything <- ALL_tree_fig +
   (nad4l_tree_fig + cox2_tree_fig) /
-  (cob_tree_fig + cox1_tree_fig) +
+    (cob_tree_fig + cox1_tree_fig) +
   plot_annotation(tag_levels = list(c("A", "B", "C", "D", "E"))) +
-  plot_layout(heights = c(12, 1), widths = c(0.6, 1.6))  # Make second row wider
+  plot_layout(heights = c(12, 1), widths = c(0.6, 1.6)) # Make second row wider
 
 ggsave(
   "imgs/everything_tree.png",
@@ -385,10 +412,10 @@ ggsave(
   dpi = 600
 )
 
-everything_v2 <-  (nad4l_tree_fig + cox2_tree_fig) /
+everything_v2 <- (nad4l_tree_fig + cox2_tree_fig) /
   (cob_tree_fig + cox1_tree_fig) +
   plot_annotation(tag_levels = list(c("A", "B", "C", "D"))) #+
-  #plot_layout(heights = c(12, 1), widths = c(0.6, 1.6))  # Make second row wider
+#plot_layout(heights = c(12, 1), widths = c(0.6, 1.6))  # Make second row wider
 
 ggsave(
   "imgs/everything_v2_tree.png",

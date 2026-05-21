@@ -1,8 +1,9 @@
 main_dir <- dirname(rstudioapi::getSourceEditorContext()$path)
 setwd(main_dir)
 
-if (!require("pacman"))
+if (!require("pacman")) {
   install.packages("pacman")
+}
 
 pacman::p_load(
   tidyverse,
@@ -79,7 +80,13 @@ load_cog_data <- function(file) {
   ) %>%
     arrange(desc(Count)) %>%
     filter(Count >= 10) %>%
-    mutate(COG_Description = factor(COG_Category, levels = cog_levels, labels = cog_labels))
+    mutate(
+      COG_Description = factor(
+        COG_Category,
+        levels = cog_levels,
+        labels = cog_labels
+      )
+    )
 }
 
 my_palette <- paletteer_d("ggsci::default_igv")[1:21]
@@ -89,19 +96,27 @@ cog_labels_for_palette <- cog_labels[1:(length(cog_labels) - 3)]
 cog_palette_barplot <- setNames(my_palette, cog_labels_for_palette)
 
 # Load and plot data
-complete <- load_cog_data("eggNOG/complete/complete_cog_category_counts_clean.tsv")
-characterized <- load_cog_data("eggNOG/characterized/characterized_cog_category_counts_clean.tsv")
+complete <- load_cog_data(
+  "eggNOG/complete/complete_cog_category_counts_clean.tsv"
+)
+characterized <- load_cog_data(
+  "eggNOG/characterized/characterized_cog_category_counts_clean.tsv"
+)
 
 # Create the bar chart
-complete_plot <- ggplot(complete, aes(
-  x = reorder(COG_Category, -Count),
-  y = Count,
-  fill = COG_Description
-)) +
-  geom_bar(stat = "identity",
-           color = "black",
-           width = 0.7) +
-  scale_fill_manual(values = cog_palette_barplot, guide = guide_legend(title = NULL)) +
+complete_plot <- ggplot(
+  complete,
+  aes(
+    x = reorder(COG_Category, -Count),
+    y = Count,
+    fill = COG_Description
+  )
+) +
+  geom_bar(stat = "identity", color = "black", width = 0.7) +
+  scale_fill_manual(
+    values = cog_palette_barplot,
+    guide = guide_legend(title = NULL)
+  ) +
   labs(x = "Functional Category", y = "Number of Sequences") +
   theme_minimal(base_size = 14) +
   theme(
@@ -123,12 +138,8 @@ complete_plot <- ggplot(complete, aes(
     ),
   ) +
   scale_y_continuous(breaks = seq(0, max(complete$Count), by = 500)) +
-  geom_hline(yintercept = 0,
-             color = "black",
-             size = 1) +
-  geom_vline(xintercept = 0,
-             color = "black",
-             size = 1)
+  geom_hline(yintercept = 0, color = "black", size = 1) +
+  geom_vline(xintercept = 0, color = "black", size = 1)
 
 ggsave(
   "imgs/complete_profile.png",
@@ -138,15 +149,19 @@ ggsave(
   dpi = 600
 )
 
-characterized_plot <- ggplot(characterized, aes(
-  x = reorder(COG_Category, -Count),
-  y = Count,
-  fill = COG_Description
-)) +
-  geom_bar(stat = "identity",
-           color = "black",
-           width = 0.7) +
-  scale_fill_manual(values = cog_palette_barplot, guide = guide_legend(title = NULL)) +
+characterized_plot <- ggplot(
+  characterized,
+  aes(
+    x = reorder(COG_Category, -Count),
+    y = Count,
+    fill = COG_Description
+  )
+) +
+  geom_bar(stat = "identity", color = "black", width = 0.7) +
+  scale_fill_manual(
+    values = cog_palette_barplot,
+    guide = guide_legend(title = NULL)
+  ) +
   labs(x = "Functional Category", y = "Number of Sequences") +
   theme_minimal(base_size = 14) +
   theme(
@@ -160,12 +175,8 @@ characterized_plot <- ggplot(characterized, aes(
     legend.position = "none"
   ) +
   scale_y_continuous(breaks = seq(0, max(characterized$Count), by = 50)) +
-  geom_hline(yintercept = 0,
-             color = "black",
-             size = 1) +
-  geom_vline(xintercept = 0,
-             color = "black",
-             size = 1)
+  geom_hline(yintercept = 0, color = "black", size = 1) +
+  geom_vline(xintercept = 0, color = "black", size = 1)
 
 ggsave(
   "imgs/characterized_profile.png",
@@ -179,20 +190,31 @@ ggsave(
 # PART 2: STACKED BAR CHARTS #
 ##############################
 
-uncharacterized <- load_cog_data("eggNOG/uncharacterized/uncharacterized_cog_category_counts_clean.tsv")
+uncharacterized <- load_cog_data(
+  "eggNOG/uncharacterized/uncharacterized_cog_category_counts_clean.tsv"
+)
 
 uncharacterized_ra <- uncharacterized %>%
-  mutate(rel_abund = (Count / sum(uncharacterized$Count)) * 100, Group = "Uncharacterized") %>%
+  mutate(
+    rel_abund = (Count / sum(uncharacterized$Count)) * 100,
+    Group = "Uncharacterized"
+  ) %>%
   select(Group, category = COG_Category, rel_abund) %>%
   arrange(Group, desc(rel_abund))
 
 characterized_ra <- characterized %>%
-  mutate(rel_abund = (Count / sum(characterized$Count)) * 100, Group = "Characterized") %>%
+  mutate(
+    rel_abund = (Count / sum(characterized$Count)) * 100,
+    Group = "Characterized"
+  ) %>%
   select(Group, category = COG_Category, rel_abund) %>%
   arrange(Group, desc(rel_abund))
 
 complete_ra <- complete %>%
-  mutate(rel_abund = (Count / sum(complete$Count)) * 100, Group = "Complete") %>%
+  mutate(
+    rel_abund = (Count / sum(complete$Count)) * 100,
+    Group = "Complete"
+  ) %>%
   select(Group, category = COG_Category, rel_abund) %>%
   arrange(Group, desc(rel_abund))
 
@@ -201,8 +223,10 @@ complete_ra$rel_abund[complete_ra$category == "K"] <- 3.9161067
 
 combined <- rbind(complete_ra, characterized_ra, uncharacterized_ra)
 
-combined$Group <- factor(combined$Group,
-                         levels = c("Characterized", "Uncharacterized", "Complete"))
+combined$Group <- factor(
+  combined$Group,
+  levels = c("Characterized", "Uncharacterized", "Complete")
+)
 
 
 category_order <- combined %>%
@@ -235,9 +259,18 @@ category_order_complete <- combined %>%
 combined <- combined %>%
   mutate(
     category = case_when(
-      Group == "Characterized" ~ factor(category, levels = category_order_characterized),
-      Group == "Uncharacterized" ~ factor(category, levels = category_order_characterized),
-      Group == "Complete" ~ factor(category, levels = category_order_characterized)
+      Group == "Characterized" ~ factor(
+        category,
+        levels = category_order_characterized
+      ),
+      Group == "Uncharacterized" ~ factor(
+        category,
+        levels = category_order_characterized
+      ),
+      Group == "Complete" ~ factor(
+        category,
+        levels = category_order_characterized
+      )
     )
   )
 
@@ -251,8 +284,10 @@ barchart <- ggplot(combined, aes(x = Group, y = rel_abund, fill = category)) +
     position = "stack"
   ) +
   scale_fill_manual(values = cog_palette) +
-  scale_y_continuous(labels = scales::percent_format(scale = 1),
-                     expand = c(0, 0)) +
+  scale_y_continuous(
+    labels = scales::percent_format(scale = 1),
+    expand = c(0, 0)
+  ) +
   scale_x_discrete(
     breaks = c("Characterized", "Uncharacterized", "Complete"),
     labels = c("Characterized", "Uncharacterized", "Complete")
@@ -271,7 +306,9 @@ barchart <- ggplot(combined, aes(x = Group, y = rel_abund, fill = category)) +
   theme(plot.margin = margin(5, 15, 5, 5))
 
 # Combine the plots with specific heights
-combined_plot <- complete_plot + characterized_plot + barchart +
+combined_plot <- complete_plot +
+  characterized_plot +
+  barchart +
   plot_layout(heights = c(6, 4, 4)) +
   plot_annotation(tag_levels = 'A')
 

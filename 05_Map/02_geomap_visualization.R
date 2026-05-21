@@ -3,8 +3,9 @@ main_dir <- dirname(rstudioapi::getSourceEditorContext()$path)
 setwd(main_dir)
 
 # Install or call libraries
-if (!require("pacman"))
+if (!require("pacman")) {
   install.packages("pacman")
+}
 
 pacman::p_load(dplyr, raster, sf, stars, tmap, terra)
 
@@ -100,7 +101,7 @@ tm_shape(tempp) +
   tm_shape(lyrp$ocean) +
   tm_fill(fill = 'azure') +
   tm_borders(col = 'steelblue') +
-  
+
   tm_shape(lyrp$usa) +
   tm_dots(
     col = 'brown1',
@@ -119,7 +120,7 @@ tm_shape(tempp) +
     xmod = 2,
     shadow = TRUE
   ) +
-  
+
   #tm_shape(lyrp$canada) +
   #tm_dots(
   #col = 'brown1',
@@ -138,7 +139,7 @@ tm_shape(tempp) +
   #xmod = -2.5,
   #shadow = TRUE
   #) +
-  
+
   # Добавляем страны
   tm_shape(lyrp$antarctica) +
   tm_dots(
@@ -158,7 +159,7 @@ tm_shape(tempp) +
     xmod = 3,
     shadow = TRUE
   ) +
-  
+
   tm_layout(
     legend.position = c('right', 'top'),
     legend.frame = TRUE,

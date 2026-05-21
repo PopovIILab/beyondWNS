@@ -7,8 +7,9 @@ setwd(main_dir)
 
 #install.packages('BiocManager')
 
-if (!require("pacman"))
+if (!require("pacman")) {
   install.packages("pacman")
+}
 
 pacman::p_load(
   ggtree,
@@ -51,7 +52,8 @@ dated_tree <- read.beast("data/dating_ultra_tree_ready.tree")
 
 # Draft tree
 
-dated_tree_fig <- ggtree(dated_tree, mrsd = "0-01-01") %<+% metadata +
+dated_tree_fig <- ggtree(dated_tree, mrsd = "0-01-01") %<+%
+  metadata +
   xlim(-330, 80) +
   geom_range(
     range = 'height_0.95_HPD',
@@ -107,7 +109,7 @@ dated_tree_fig <- ggtree(dated_tree, mrsd = "0-01-01") %<+% metadata +
     axis.text.x.bottom = element_text(margin = margin(t = 5)),
     plot.margin = margin(0, 0, 0, 0)
   ) +
-  
+
   #geom_text2(aes(subset = !is.na(height_median) &
   #(abs(height_median) > 110 |
   #(abs(height_median) > 50 & abs(height_median) < 55) |
@@ -115,12 +117,12 @@ dated_tree_fig <- ggtree(dated_tree, mrsd = "0-01-01") %<+% metadata +
   #abs(height_median) > 0.01 & abs(height_median) < 0.07),
   #label = round(height_median, 2)),
   #fill = "white", hjust = -0.5, vjust = 0.5, size = 4, color = "black", fontface = "bold") +
-  
+
   scale_x_continuous(
     breaks = c(-2.58, -23, -66, -145, -201.4, -251.902, -298.9, -316.85),
     labels = c("2.58", "23", "66", "145", "201.4", "251.9", "298.9", "316.85")
   ) +
-  
+
   # Add semi-transparent dashed lines at specific positions
   geom_vline(
     xintercept = c(-2.58, -23, -66, -145, -201.4, -251.902, -298.9),
@@ -157,12 +159,17 @@ dated_tree_fig <- ggtree(dated_tree, mrsd = "0-01-01") %<+% metadata +
     alpha = .5,
     fontface = "bold"
   ) +
-  geom_label2(aes(subset = !is.na(posterior) & abs(posterior) < 1,
-                  x = branch, label = round(posterior, 2)),
-              vjust = 1.5,
-              size = 3,
-              fill = "white",
-              alpha = .5,) +
+  geom_label2(
+    aes(
+      subset = !is.na(posterior) & abs(posterior) < 1,
+      x = branch,
+      label = round(posterior, 2)
+    ),
+    vjust = 1.5,
+    size = 3,
+    fill = "white",
+    alpha = .5,
+  ) +
   geom_point2(
     aes(subset = node == 34),
     shape = 21,
@@ -198,7 +205,10 @@ cols_to_convert <- c("AverageAge", "GMST_05", "GMST_50", "GMST_95")
 data[cols_to_convert] <- lapply(data[cols_to_convert], as.numeric)
 
 data_trimmed <- data %>%
-  filter(AverageAge <= abs(ggplot_build(dated_tree_fig)$layout$panel_params[[1]]$x.range[1]))
+  filter(
+    AverageAge <=
+      abs(ggplot_build(dated_tree_fig)$layout$panel_params[[1]]$x.range[1])
+  )
 
 data_trimmed$MYA_neg <- -data_trimmed$AverageAge
 
@@ -206,7 +216,13 @@ time_plot <- ggplot(data_trimmed, aes(x = MYA_neg)) +
   geom_rect(
     data = data.frame(
       xmin = c(
-        ggplot_build(dated_tree_fig)$layout$panel_params[[1]]$x.range[1],-298.9,-251.902,-201.4,-145,-66,-23
+        ggplot_build(dated_tree_fig)$layout$panel_params[[1]]$x.range[1],
+        -298.9,
+        -251.902,
+        -201.4,
+        -145,
+        -66,
+        -23
       ),
       xmax = c(-298.9, -251.902, -201.4, -145, -66, -23, -2.58),
       ymin = -Inf,
@@ -232,9 +248,11 @@ time_plot <- ggplot(data_trimmed, aes(x = MYA_neg)) +
     alpha = 0.15
   ) +
   scale_fill_identity() +
-  geom_ribbon(aes(ymin = GMST_05, ymax = GMST_95),
-              fill = "grey80",
-              alpha = 0.5) +
+  geom_ribbon(
+    aes(ymin = GMST_05, ymax = GMST_95),
+    fill = "grey80",
+    alpha = 0.5
+  ) +
   geom_line(aes(y = GMST_50), size = 1.2) +
   scale_x_continuous(
     limits = c(
@@ -321,7 +339,11 @@ time_plot <- ggplot(data_trimmed, aes(x = MYA_neg)) +
   geom_text_repel(
     data = data.frame(
       MYA_neg = -140.93,
-      GMST = approx(data_trimmed$MYA_neg, data_trimmed$GMST_50, xout = -140.93)$y
+      GMST = approx(
+        data_trimmed$MYA_neg,
+        data_trimmed$GMST_50,
+        xout = -140.93
+      )$y
     ),
     aes(
       x = MYA_neg,
@@ -339,7 +361,11 @@ time_plot <- ggplot(data_trimmed, aes(x = MYA_neg)) +
   geom_point(
     data = data.frame(
       MYA_neg = -140.93,
-      GMST = approx(data_trimmed$MYA_neg, data_trimmed$GMST_50, xout = -140.93)$y
+      GMST = approx(
+        data_trimmed$MYA_neg,
+        data_trimmed$GMST_50,
+        xout = -140.93
+      )$y
     ),
     aes(x = MYA_neg, y = GMST),
     shape = 21,
@@ -349,7 +375,7 @@ time_plot <- ggplot(data_trimmed, aes(x = MYA_neg)) +
     stroke = 1
   )
 
-TEST <- (dated_tree_fig / time_plot)  +
+TEST <- (dated_tree_fig / time_plot) +
   plot_layout(guides = 'collect', heights = c(12, 5))
 
 ggsave(
